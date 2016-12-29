@@ -1,0 +1,31 @@
+apiVersion: extensions/v1beta1
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    app: java
+  name: java-example
+  namespace: default
+spec:
+  type: NodePort
+  ports:
+  - port: 8080
+  selector:
+    app: java
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: java-example
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: java 
+    spec:
+      containers:
+      - name: java-example
+        image: jsicotte/exceptionapp
+        ports:
+          - containerPort: 8080
